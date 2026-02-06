@@ -22,4 +22,3 @@ downloads
 *.pid
 *.lock
 .env
-/vpn/wireguard/wg0.conf
