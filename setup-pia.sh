@@ -1,3 +1,4 @@
+#!/bin/bash
 if ! command -v pia-wg-config &> /dev/null; then
     sudo apt-get update && sudo apt-get install golang-go
 
