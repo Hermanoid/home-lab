@@ -251,6 +251,7 @@ services:
       - 8686:8686 # Lidarr
     volumes:
       - /vpn:/gluetun
+      - /vpn/wireguard/wg0.conf:/gluetun/wireguard/wg0.conf
     environment:
       - VPN_PORT_FORWARDING=on
       - VPN_SERVICE_PROVIDER=custom
