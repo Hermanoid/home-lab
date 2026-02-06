@@ -21,3 +21,4 @@ downloads
 *.log
 *.pid
 *.lock
+.env

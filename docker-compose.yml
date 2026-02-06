@@ -252,9 +252,17 @@ services:
     volumes:
       - /vpn:/gluetun
     environment:
-      - VPN_SERVICE_PROVIDER=protonvpn
-      - OPENVPN_USER=user
-      - OPENVPN_PASSWORD=pass
-      - FREE_ONLY=on
       - VPN_PORT_FORWARDING=on
- 
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=wireguard
+      # - WIREGUARD_ENDPOINT_IP=66.56.81.154
+      # - WIREGUARD_ENDPOINT_PORT=1337
+      # - WIREGUARD_PRESHARED_KEY=xOEI9rqqbDwnN8/Bpp22sVz48T71vJ4fYmFWujulwUU=
+      # - WIREGUARD_ADDRESSES=10.25.254.32/32
+      - VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget -O- --retry-connrefused --post-data "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"{{VPN_INTERFACE}}\",\"random_port\":false,\"upnp\":false}" http://127.0.0.1:15080/api/v2/app/setPreferences 2>&1' 
+      - VPN_PORT_FORWARDING_DOWN_COMMAND=/bin/sh -c 'wget -O- --retry-connrefused --post-data "json={\"listen_port\":0,\"current_network_interface\":\"lo"}" http://127.0.0.1:15080/api/v2/app/setPreferences 2>&1'
+      # - VPN_SERVICE_PROVIDER=private internet access
+      # - OPENVPN_USER=user
+      # - OPENVPN_PASSWORD=pass
+      # - FREE_ONLY=on
+      # - VPN_PORT_FORWARDING=on
