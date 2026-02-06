@@ -15,4 +15,4 @@ fi
 # Retrieved 2026-02-05, License - CC BY-SA 4.0
 
 export $(grep -v '^#' .env | xargs)
-pia-wg-config -r ca_ontario $PIA_USERNAME $PIA_PASSWORD | vpn/wireguard/wg0.conf
+pia-wg-config -r ca_ontario $PIA_USERNAME $PIA_PASSWORD > vpn/wireguard/wg0.conf
