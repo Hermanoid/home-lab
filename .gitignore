@@ -14,3 +14,10 @@
 #docker-compose.yml
 .outofdate
 downloads
+*.db*
+**/logs
+**/Logs
+**/log
+*.log
+*.pid
+*.lock
