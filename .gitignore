@@ -10,7 +10,7 @@
 /TVseries/
 /TransmissionWathFolder/
 /TVrecordings/
-/vpn/
-docker-compose.yml
+#/vpn/
+#docker-compose.yml
 .outofdate
 downloads

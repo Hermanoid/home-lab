@@ -1,0 +1,215 @@
+version: '2'
+services:
+
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce
+    restart: unless-stopped
+    ports:
+      - 9000:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./volumes/portainer/data:/data
+
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - UMASK_SET=022 #optional
+    volumes:
+      - ./volumes/sonarr/data:/config
+      - ./media/tvshows:/tv
+      - ./downloads:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+  medusa:
+    image: ghcr.io/linuxserver/medusa
+    container_name: medusa
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+    volumes:
+      - ./volumes/medusa/config:/config
+      - ./downloads:/downloads
+      - ./media/tvshows:/tv
+    ports:
+      - 8081:8081
+    restart: unless-stopped
+
+
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=UTC
+      - UMASK=022 #optional
+    volumes:
+      - ./volumes/radarr/config:/config
+      - ./media/movies:/movies
+      - ./downloads:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+  lidarr:
+    image: linuxserver/lidarr
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - UMASK_SET=022 #optional
+    volumes:
+      - ./volumes/lidarr/config:/config
+      - ./media/music:/music
+      - ./downloads:/downloads
+    ports:
+      - 8686:8686
+
+  bazarr:
+    image: linuxserver/bazarr
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - UMASK_SET=022 #optional
+    volumes:
+      - ./volumes/bazarr/config:/config
+      - ./media/movies:/movies
+      - ./media/tvshows:/tv
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - AUTO_UPDATE=true #optional
+      # - RUN_OPTS=<run options here> #optional
+    volumes:
+      - ./volumes/jackett/config:/config
+      - ./downloads:/downloads
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+
+  plex:
+    image: ghcr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - UMASK_SET=022 #optional
+      # - PLEX_CLAIM= #optional
+    volumes:
+      - ./volumes/plex/library:/config
+      - ./media/tvshows:/tv
+      - ./media/movies:/movies
+    restart: unless-stopped
+
+  overseerr:
+    image: ghcr.io/linuxserver/overseerr
+    container_name: overseerr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+    volumes:
+      - /volumes/overseerr/config:/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK_SET=022
+      - WEBUI_PORT=15080
+    volumes:
+      - ./volumes/qbittorrent/config:/config
+      - ./downloads:/downloads
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 15080:15080
+      - 1080:1080
+
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    network_mode: host  # to facilitate proper DHCP propagation. https://docs.pi-hole.net/docker/dhcp/
+    #ports:
+    #  - "53:53/tcp"
+    #  - "53:53/udp"
+    #  - "67:67/udp"
+    #  - "8089:80/tcp"
+    #  - "443:443/tcp"
+    env_file:
+      - ./services/pihole/pihole.env  # check the file location for more options to configure  
+    volumes:
+       - ./volumes/pihole/etc-pihole/:/etc/pihole/
+       - ./volumes/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    # Recommended but not required (DHCP needs NET_ADMIN)
+    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
+
+# ======================================================================================================================================
+# Check instructions at https://greenfrognest.com/LMDSVPN.php if you would like to secure other containers using this one as a gateway.
+# ======================================================================================================================================
+  vpn:
+    container_name: vpn-gateway
+    image: dperson/openvpn-client
+    restart: unless-stopped
+    ports:            # List all port numbers of the containers that you would like to put behind VPN. Remember, these ports can only exist in a single place inside entire docker-compose.yml file.
+      - 90:80         # Redirecting to port 90 as 80 we will need this at some point for reverseproxy traefik. 
+    dns:              # Use VPN provided DNS IPs if you have them otherwise leave as is.
+      - 8.8.8.8
+      - 8.8.4.4
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - '/dev/net/tun:/dev/net/tun:rwm'
+    environment:
+      FIREWALL: ''    # If you use different VPN ports then default 1194 add them in here, otherwise leave it empty as is.
+     #VPN 'server_address;user;password;port'    # Configure VPN server address, authentication and port if needed by your VPN provider (port value is optional) we will use an external config file for this, leave commented as is.
+      PUID: 1000
+      PGID: 1000
+      TZ: UTC+0
+      ROUTE: '192.168.0.0/16'    # Specify subnet of your home LAN in order to connect into the container behind VPN - if you don't, containers will work but you wont be able to connect to them locally.
+    networks:
+      - default
+    read_only: true
+    tmpfs:
+      - /run
+      - /tmp
+    security_opt:
+      - label:disable
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./vpn:/vpn    # This folder should contain two files:
+                      # 1. Copy .ovpn file you received from VPN provider in here and rename it to vpn.conf
+                      # 2. Create vpn.auth file and put there your username and password in two separate lines one under another.
+                      # Important: edit vpn.conf file you renamed and find line called auth-user-pass append it with a path to your vpn.auth file, in my case: auth-user-pass /vpn/vpn.auth 
