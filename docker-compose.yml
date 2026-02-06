@@ -245,9 +245,9 @@ services:
       # - 9696:9696 # prowlarr
       - 9117:9117 # Jackett
       - 7878:7878 # Radarr
-      - 8787:8787 # Readarr
+      # - 8787:8787 # Readarr
       - 5055:5055 # Overseer
-      - 6767:6767 # Bazarr
+      # - 6767:6767 # Bazarr
       - 8686:8686 # Lidarr
     volumes:
       - /vpn:/gluetun
