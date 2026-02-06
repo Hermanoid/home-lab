@@ -158,6 +158,7 @@ services:
       - PGID=1000
       - UMASK_SET=022
       - WEBUI_PORT=15080
+      - TZ=UTC
     volumes:
       - ./volumes/qbittorrent/config:/config
       - ${DOWNLOAD_ROOT}:/downloads
@@ -251,10 +252,14 @@ services:
       - 8686:8686 # Lidarr
     volumes:
       - /vpn:/gluetun
-      - /vpn/wireguard/wg0.conf:/gluetun/wireguard/wg0.conf
     environment:
       - VPN_PORT_FORWARDING=on
       - VPN_SERVICE_PROVIDER=private internet access
       - OPENVPN_USER=${PIA_USERNAME}
       - OPENVPN_PASSWORD=${PIA_PASSWORD}
-      - SERVER_REGIONS=CA Toronto
+      - SERVER_REGIONS=CA Toronto 
+      - PORT_FORWARD_ONLY=true
+      - TZ=UTC
+      - BLOCK_MALICIOUS=off
+      - VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget -O- --retry-connrefused --post-data "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"{{VPN_INTERFACE}}\",\"random_port\":false,\"upnp\":false}" http://127.0.0.1:15080/api/v2/app/setPreferences 2>&1' 
+      - VPN_PORT_FORWARDING_DOWN_COMMAND=/bin/sh -c 'wget -O- --retry-connrefused --post-data "json={\"listen_port\":0,\"current_network_interface\":\"lo"}" http://127.0.0.1:15080/api/v2/app/setPreferences 2>&1'
