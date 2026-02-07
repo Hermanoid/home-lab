@@ -9,12 +9,12 @@ services:
       - UMASK_SET=022 #optional
     volumes:
       - ./volumes/sonarr/data:/config
-      - ${MEDIA_ROOT}/tvshows:/tv
+      - ${MEDIA_ROOT}/plex/tvshows:/tv
       - ${DOWNLOAD_ROOT}:/downloads
     depends_on:
       - gluetun
       - qbittorrent
-      - jackett
+      - prowlarr
     restart: unless-stopped
     network_mode: service:gluetun
   radarr:
@@ -27,13 +27,13 @@ services:
       - UMASK=022 #optional
     volumes:
       - ./volumes/radarr/config:/config
-      - ${MEDIA_ROOT}/movies:/movies
+      - ${MEDIA_ROOT}/plex/movies:/movies
       - ${DOWNLOAD_ROOT}:/downloads
     restart: unless-stopped
     depends_on:
       - gluetun
       - qbittorrent
-      - jackett
+      - prowlarr
     network_mode: service:gluetun
 
   lidarr:
@@ -46,12 +46,12 @@ services:
       - UMASK_SET=022 #optional
     volumes:
       - ./volumes/lidarr/config:/config
-      - ${MEDIA_ROOT}/music:/music
+      - ${MEDIA_ROOT}/plex/music:/music
       - ${DOWNLOAD_ROOT}:/downloads
     depends_on:
       - gluetun
       - qbittorrent
-      - jackett
+      - prowlarr
     network_mode: service:gluetun
 
   #   image: linuxserver/bazarr
@@ -69,24 +69,40 @@ services:
   #     - 6767:6767
   #   restart: unless-stopped
   #   network_mode: service:gluetun
-  jackett:
-    image: linuxserver/jackett
-    container_name: jackett
+  # jackett:
+  #   image: linuxserver/jackett
+  #   container_name: jackett
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000  # bazarr:
+  #     - TZ=UTC
+  #     - AUTO_UPDATE=true #optional
+  #     # - RUN_OPTS=<run options here> #optional
+  #   volumes:
+  #     - ./volumes/jackett/config:/config
+  #     - ${DOWNLOAD_ROOT}:/downloads
+  #   depends_on:
+  #     - gluetun
+  #     - qbittorrent
+  #     - flaresolverr
+  #   network_mode: service:gluetun
+  #   restart: unless-stopped
+  prowlarr:
+    image: ghcr.io/linuxserver/prowlarr:develop
+    container_name: prowlarr
+    network_mode: service:gluetun
     environment:
       - PUID=1000
-      - PGID=1000  # bazarr:
+      - PGID=1000
       - TZ=UTC
-      - AUTO_UPDATE=true #optional
-      # - RUN_OPTS=<run options here> #optional
-    volumes:
-      - ./volumes/jackett/config:/config
-      - ${DOWNLOAD_ROOT}:/downloads
     depends_on:
       - gluetun
-      - qbittorrent
       - flaresolverr
-    network_mode: service:gluetun
+    volumes:
+      - ./volumes/prowlarr/config:/config
+      - ${DOWNLOAD_ROOT}:/downloads
     restart: unless-stopped
+
 
   flaresolverr: 
     image: ghcr.io/flaresolverr/flaresolverr:latest 
@@ -129,7 +145,7 @@ services:
     depends_on:
       - gluetun
       - qbittorrent
-      - jackett
+      - prowlarr
     restart: unless-stopped
     network_mode: service:gluetun
 
@@ -148,6 +164,7 @@ services:
     depends_on:
       - gluetun
     network_mode: service:gluetun
+
 
   # pihole:
   #   container_name: pihole
@@ -187,8 +204,8 @@ services:
       - 15080:15080
       - 1080:1080
       - 8989:8989 # Sonarr
-      # - 9696:9696 # prowlarr
-      - 9117:9117 # Jackett
+      - 9696:9696 # prowlarr
+      # - 9117:9117 # Jackett
       - 7878:7878 # Radarr
       # - 8787:8787 # Readarr
       - 5055:5055 # Overseer
