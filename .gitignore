@@ -23,3 +23,16 @@ downloads
 *.lock
 .env
 **/lockfile
+**/cache
+*.crt
+*.key
+*.pub
+**/listsCache
+**/config_backups
+*.pem
+cli_pw
+volumes/pihole/etc-pihole/cli_pw
+volumes/portainer
+**/logrotate
+*.LocalAdminToken
+volumes/plex/library/Library/Application Support/Plex Media Server/.LocalAdminToken
