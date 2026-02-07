@@ -21,3 +21,144 @@
 2026-02-06 04:21:52.0193 Warn No XML encryptor configured. Key {b7c1081d-21c6-4062-983a-6457e9f7cbb2} may be persisted to storage in unencrypted form.
 2026-02-06 04:21:52.4413 Info Jackett startup finished in 52.240 s
 2026-02-06 05:20:50.4545 Info Jackett stopped
+2026-02-07 21:25:52.0383 Info Starting Jackett v0.24.1032
+2026-02-07 21:25:54.2898 Info Environment version: 9.0.12 (/app/Jackett/)
+2026-02-07 21:25:54.3140 Info OS version: Unix 6.12.47.8 (64bit OS) (64bit process)
+2026-02-07 21:25:54.3339 Info Jackett variant: CoreLinuxMuslArm64
+2026-02-07 21:25:54.3442 Info File /etc/issue: Welcome to Alpine Linux 3.22
+2026-02-07 21:25:54.3442 Info Running in Docker: Yes (image build: v0.24.1032-ls302)
+2026-02-07 21:25:54.3509 Info ThreadPool MaxThreads: 32767 workerThreads, 1000 completionPortThreads
+2026-02-07 21:25:54.3509 Info App config/log directory: /config/Jackett
+2026-02-07 21:25:54.3575 Info Using proxy: Disabled
+2026-02-07 21:25:54.3575 Info Using FlareSolverr: No
+2026-02-07 21:25:54.3679 Info Using HTTP Client: HttpWebClient2
+2026-02-07 21:25:54.3863 Info Loading Native indexers ...
+2026-02-07 21:25:54.6062 Info Loaded 72 Native indexers.
+2026-02-07 21:25:54.6155 Info Loading Cardigann indexers from: /config/cardigann/definitions/, /etc/xdg/cardigan/definitions/, /app/Jackett/Definitions
+2026-02-07 21:26:05.5432 Info Loaded 540 Cardigann indexers.
+2026-02-07 21:26:05.5432 Info Loaded 612 indexers in total
+2026-02-07 21:26:05.5735 Info Adding aggregate indexer ('all' indexer) ...
+2026-02-07 21:26:05.6175 Info Adding filter indexer ('type:public' indexer) ...
+2026-02-07 21:26:05.6197 Info Adding filter indexer ('type:private' indexer) ...
+2026-02-07 21:26:05.6197 Info Adding filter indexer ('type:semi-public' indexer) ...
+2026-02-07 21:26:06.3965 Info Jackett startup finished in 15.480 s
+2026-02-07 21:35:15.7460 Info Jackett stopped
+2026-02-07 21:40:39.3802 Info Starting Jackett v0.24.1032
+2026-02-07 21:40:45.8680 Info Environment version: 9.0.12 (/app/Jackett/)
+2026-02-07 21:40:45.8885 Info OS version: Unix 6.12.47.8 (64bit OS) (64bit process)
+2026-02-07 21:40:45.9045 Info Jackett variant: CoreLinuxMuslArm64
+2026-02-07 21:40:45.9149 Info File /etc/issue: Welcome to Alpine Linux 3.22
+2026-02-07 21:40:45.9149 Info Running in Docker: Yes (image build: v0.24.1032-ls302)
+2026-02-07 21:40:45.9226 Info ThreadPool MaxThreads: 32767 workerThreads, 1000 completionPortThreads
+2026-02-07 21:40:45.9240 Info App config/log directory: /config/Jackett
+2026-02-07 21:40:45.9293 Info Using proxy: Disabled
+2026-02-07 21:40:45.9293 Info Using FlareSolverr: No
+2026-02-07 21:40:45.9390 Info Using HTTP Client: HttpWebClient2
+2026-02-07 21:40:45.9545 Info Loading Native indexers ...
+2026-02-07 21:40:46.2173 Info Loaded 72 Native indexers.
+2026-02-07 21:40:46.2570 Info Loading Cardigann indexers from: /config/cardigann/definitions/, /etc/xdg/cardigan/definitions/, /app/Jackett/Definitions
+2026-02-07 21:41:00.5322 Info Loaded 540 Cardigann indexers.
+2026-02-07 21:41:00.5322 Info Loaded 612 indexers in total
+2026-02-07 21:41:00.5630 Info Adding aggregate indexer ('all' indexer) ...
+2026-02-07 21:41:00.5960 Info Adding filter indexer ('type:public' indexer) ...
+2026-02-07 21:41:00.5960 Info Adding filter indexer ('type:private' indexer) ...
+2026-02-07 21:41:00.5989 Info Adding filter indexer ('type:semi-public' indexer) ...
+2026-02-07 21:41:01.5989 Info Jackett startup finished in 25.685 s
+2026-02-07 21:45:15.0550 Error Jackett.Common.IndexerException: Exception (1337x): Challenge detected but FlareSolverr is not configured
+
+[v0.24.1032.0] Jackett.Common.IndexerException: Exception (1337x): Challenge detected but FlareSolverr is not configured
+ ---> FlareSolverrSharp.Exceptions.FlareSolverrException: Challenge detected but FlareSolverr is not configured
+   at FlareSolverrSharp.ClearanceHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at Jackett.Common.Utils.Clients.HttpWebClient2.Run(WebRequest webRequest) in ./Jackett.Common/Utils/Clients/HttpWebClient2.cs:line 174
+   at Jackett.Common.Utils.Clients.WebClient.GetResultAsync(WebRequest request) in ./Jackett.Common/Utils/Clients/WebClient.cs:line 188
+   at Jackett.Common.Indexers.BaseWebIndexer.RequestWithCookiesAsync(String url, String cookieOverride, RequestType method, String referer, IEnumerable`1 data, Dictionary`2 headers, String rawbody, Nullable`1 emulateBrowser) in ./Jackett.Common/Indexers/BaseIndexer.cs:line 617
+   at Jackett.Common.Indexers.Definitions.CardigannIndexer.PerformQuery(TorznabQuery query) in ./Jackett.Common/Indexers/Definitions/CardigannIndexer.cs:line 1564
+   at Jackett.Common.Indexers.BaseIndexer.ResultsForQuery(TorznabQuery query, Boolean isMetaIndexer) in ./Jackett.Common/Indexers/BaseIndexer.cs:line 378
+   --- End of inner exception stack trace ---
+   at Jackett.Common.Indexers.BaseIndexer.ResultsForQuery(TorznabQuery query, Boolean isMetaIndexer) in ./Jackett.Common/Indexers/BaseIndexer.cs:line 403
+   at Jackett.Common.Indexers.BaseWebIndexer.ResultsForQuery(TorznabQuery query, Boolean isMetaIndexer) in ./Jackett.Common/Indexers/BaseIndexer.cs:line 816
+   at Jackett.Common.Services.IndexerManagerService.TestIndexer(String name) in ./Jackett.Common/Services/IndexerManagerService.cs:line 324
+   at Jackett.Server.Controllers.IndexerApiController.Test() in ./Jackett.Server/Controllers/IndexerApiController.cs:line 132
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Jackett.Server.Middleware.CustomExceptionHandler.Invoke(HttpContext httpContext) in ./Jackett.Server/Middleware/CustomExceptionHandler.cs:line 26
+
+2026-02-07 21:45:50.0833 Error System.Exception: FlareSolverr API URL is invalid. Example: http://127.0.0.1:8191
+
+[v0.24.1032.0] System.Exception: FlareSolverr API URL is invalid. Example: http://127.0.0.1:8191
+   at Jackett.Server.Controllers.ServerConfigurationController.UpdateConfig(ServerConfig config) in ./Jackett.Server/Controllers/ServerConfigurationController.cs:line 149
+   at lambda_method539(Closure, Object, Object[])
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.SyncActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeNextActionFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Jackett.Server.Middleware.CustomExceptionHandler.Invoke(HttpContext httpContext) in ./Jackett.Server/Middleware/CustomExceptionHandler.cs:line 26
+
+2026-02-07 21:46:00.2872 Info Adding aggregate indexer ('all' indexer) ...
+2026-02-07 21:46:00.2872 Info Adding filter indexer ('type:public' indexer) ...
+2026-02-07 21:46:00.2872 Info Adding filter indexer ('type:private' indexer) ...
+2026-02-07 21:46:00.2914 Info Adding filter indexer ('type:semi-public' indexer) ...
+2026-02-07 21:46:00.8040 Info Restarting webhost due to configuration change
+2026-02-07 21:46:00.8040 Info Restart of the web application host (not process) initiated
+2026-02-07 21:46:00.8672 Info Jackett stopped
+2026-02-07 21:46:00.9772 Info Environment version: 9.0.12 (/app/Jackett/)
+2026-02-07 21:46:00.9772 Info OS version: Unix 6.12.47.8 (64bit OS) (64bit process)
+2026-02-07 21:46:00.9807 Info Jackett variant: CoreLinuxMuslArm64
+2026-02-07 21:46:00.9807 Info File /etc/issue: Welcome to Alpine Linux 3.22
+2026-02-07 21:46:00.9830 Info Running in Docker: Yes (image build: v0.24.1032-ls302)
+2026-02-07 21:46:00.9830 Info ThreadPool MaxThreads: 32767 workerThreads, 1000 completionPortThreads
+2026-02-07 21:46:00.9830 Info App config/log directory: /config/Jackett
+2026-02-07 21:46:00.9830 Info Using proxy: Disabled
+2026-02-07 21:46:00.9830 Info Using FlareSolverr: http://127.0.0.1:8191
+2026-02-07 21:46:00.9879 Info Using HTTP Client: HttpWebClient2
+2026-02-07 21:46:00.9879 Info Loading Native indexers ...
+2026-02-07 21:46:01.0676 Info Loaded 72 Native indexers.
+2026-02-07 21:46:01.0676 Info Loading Cardigann indexers from: /config/cardigann/definitions/, /etc/xdg/cardigan/definitions/, /app/Jackett/Definitions
+2026-02-07 21:46:04.8979 Info Loaded 540 Cardigann indexers.
+2026-02-07 21:46:04.8991 Info Loaded 612 indexers in total
+2026-02-07 21:46:04.9116 Info Adding aggregate indexer ('all' indexer) ...
+2026-02-07 21:46:04.9116 Info Adding filter indexer ('type:public' indexer) ...
+2026-02-07 21:46:04.9116 Info Adding filter indexer ('type:private' indexer) ...
+2026-02-07 21:46:04.9116 Info Adding filter indexer ('type:semi-public' indexer) ...
+2026-02-07 21:46:05.0201 Info Jackett startup finished in 329.145 s
+2026-02-07 21:46:32.7515 Info Test search in 1337x => Found 80 releases [23251ms]
+2026-02-07 21:49:27.8912 Info Jackett stopped
+2026-02-07 21:51:50.5037 Info Starting Jackett v0.24.1032
+2026-02-07 21:51:56.4141 Info Environment version: 9.0.12 (/app/Jackett/)
+2026-02-07 21:51:56.4406 Info OS version: Unix 6.12.47.8 (64bit OS) (64bit process)
+2026-02-07 21:51:56.4604 Info Jackett variant: CoreLinuxMuslArm64
+2026-02-07 21:51:56.4604 Info File /etc/issue: Welcome to Alpine Linux 3.22
+2026-02-07 21:51:56.4637 Info Running in Docker: Yes (image build: v0.24.1032-ls302)
+2026-02-07 21:51:56.4683 Info ThreadPool MaxThreads: 32767 workerThreads, 1000 completionPortThreads
+2026-02-07 21:51:56.4683 Info App config/log directory: /config/Jackett
+2026-02-07 21:51:56.4762 Info Using proxy: Disabled
+2026-02-07 21:51:56.4762 Info Using FlareSolverr: http://127.0.0.1:8191
+2026-02-07 21:51:56.4907 Info Using HTTP Client: HttpWebClient2
+2026-02-07 21:51:56.5206 Info Loading Native indexers ...
+2026-02-07 21:51:57.2842 Info Loaded 72 Native indexers.
+2026-02-07 21:51:57.3275 Info Loading Cardigann indexers from: /config/cardigann/definitions/, /etc/xdg/cardigan/definitions/, /app/Jackett/Definitions
+2026-02-07 21:52:24.3193 Info Loaded 540 Cardigann indexers.
+2026-02-07 21:52:24.3242 Info Loaded 612 indexers in total
+2026-02-07 21:52:24.4284 Info Adding aggregate indexer ('all' indexer) ...
+2026-02-07 21:52:24.4699 Info Adding filter indexer ('type:public' indexer) ...
+2026-02-07 21:52:24.4760 Info Adding filter indexer ('type:private' indexer) ...
+2026-02-07 21:52:24.4760 Info Adding filter indexer ('type:semi-public' indexer) ...
+2026-02-07 21:52:26.6176 Info Jackett startup finished in 37.824 s

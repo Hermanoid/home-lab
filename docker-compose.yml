@@ -1,16 +1,4 @@
-version: '2'
 services:
-
-  # portainer:
-  #   container_name: portainer
-  #   image: portainer/portainer-ce
-  #   restart: unless-stopped
-  #   ports:
-  #     - 9000:9000
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - ./volumes/portainer/data:/data
-
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
@@ -29,23 +17,6 @@ services:
       - jackett
     restart: unless-stopped
     network_mode: service:gluetun
-
-  # medusa:
-  #   image: ghcr.io/linuxserver/medusa
-  #   container_name: medusa
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=UTC
-  #   volumes:
-  #     - ./volumes/medusa/config:/config
-  #     - ./downloads:/downloads
-  #     - ./media/tvshows:/tv
-  #   ports:
-  #     - 8081:8081
-  #   restart: unless-stopped
-
-
   radarr:
     image: linuxserver/radarr
     container_name: radarr
@@ -83,12 +54,6 @@ services:
       - jackett
     network_mode: service:gluetun
 
-  jackett:
-    image: linuxserver/jackett
-    container_name: jackett
-    environment:
-      - PUID=1000
-      - PGID=1000  # bazarr:
   #   image: linuxserver/bazarr
   #   container_name: bazarr
   #   environment:
@@ -104,6 +69,12 @@ services:
   #     - 6767:6767
   #   restart: unless-stopped
   #   network_mode: service:gluetun
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000  # bazarr:
       - TZ=UTC
       - AUTO_UPDATE=true #optional
       # - RUN_OPTS=<run options here> #optional
@@ -113,10 +84,22 @@ services:
     depends_on:
       - gluetun
       - qbittorrent
+      - flaresolverr
     network_mode: service:gluetun
-
-
     restart: unless-stopped
+
+  flaresolverr: 
+    image: ghcr.io/flaresolverr/flaresolverr:latest 
+    container_name: flaresolverr
+    network_mode: service:gluetun
+    environment: 
+      - LOG_LEVEL=${LOG_LEVEL:-info} 
+      - LOG_HTML=${LOG_HTML:-false} 
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none} 
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+    restart: unless-stopped 
 
   plex:
     image: ghcr.io/linuxserver/plex:latest
@@ -190,44 +173,6 @@ services:
   #     - NET_ADMIN
   #   restart: unless-stopped
 
-# ======================================================================================================================================
-# Check instructions at https://greenfrognest.com/LMDSVPN.php if you would like to secure other containers using this one as a gateway.
-# ======================================================================================================================================
-  # vpn:
-  #   container_name: vpn-gateway
-  #   image: dperson/openvpn-client
-  #   restart: unless-stopped
-  #   ports:            # List all port numbers of the containers that you would like to put behind VPN. Remember, these ports can only exist in a single place inside entire docker-compose.yml file.
-  #     - 90:80         # Redirecting to port 90 as 80 we will need this at some point for reverseproxy traefik. 
-  #   dns:              # Use VPN provided DNS IPs if you have them otherwise leave as is.
-  #     - 8.8.8.8
-  #     - 8.8.4.4
-  #   cap_add:
-  #     - NET_ADMIN
-  #   devices:
-  #     - '/dev/net/tun:/dev/net/tun:rwm'
-  #   environment:
-  #     FIREWALL: ''    # If you use different VPN ports then default 1194 add them in here, otherwise leave it empty as is.
-  #    #VPN 'server_address;user;password;port'    # Configure VPN server address, authentication and port if needed by your VPN provider (port value is optional) we will use an external config file for this, leave commented as is.
-  #     PUID: 1000
-  #     PGID: 1000
-  #     TZ: UTC+0
-  #     ROUTE: '192.168.0.0/16'    # Specify subnet of your home LAN in order to connect into the container behind VPN - if you don't, containers will work but you wont be able to connect to them locally.
-  #   networks:
-  #     - default
-  #   read_only: true
-  #   tmpfs:
-  #     - /run
-  #     - /tmp
-  #   security_opt:
-  #     - label:disable
-  #   stdin_open: true
-  #   tty: true
-  #   volumes:
-  #     - ./vpn:/vpn    # This folder should contain two files:
-  #                     # 1. Copy .ovpn file you received from VPN provider in here and rename it to vpn.conf
-  #                     # 2. Create vpn.auth file and put there your username and password in two separate lines one under another.
-  #                     # Important: edit vpn.conf file you renamed and find line called auth-user-pass append it with a path to your vpn.auth file, in my case: auth-user-pass /vpn/vpn.auth 
   gluetun:
     image: qmcgaw/gluetun
     container_name: gluetun
@@ -241,7 +186,6 @@ services:
       - 6881:6881/udp
       - 15080:15080
       - 1080:1080
-      - 9117:9117 # Prowlarr
       - 8989:8989 # Sonarr
       # - 9696:9696 # prowlarr
       - 9117:9117 # Jackett
@@ -253,13 +197,22 @@ services:
     volumes:
       - /vpn:/gluetun
     environment:
-      - VPN_PORT_FORWARDING=on
-      - VPN_SERVICE_PROVIDER=private internet access
-      - OPENVPN_USER=${PIA_USERNAME}
-      - OPENVPN_PASSWORD=${PIA_PASSWORD}
-      - SERVER_REGIONS=CA Toronto 
-      - PORT_FORWARD_ONLY=true
+      # - VPN_PORT_FORWARDING=on
+      # - VPN_SERVICE_PROVIDER=private internet access
+      # - OPENVPN_USER=${PIA_USERNAME}
+      # - OPENVPN_PASSWORD=${PIA_PASSWORD}
+      # - SERVER_REGIONS=CA Toronto 
+      # - PORT_FORWARD_ONLY=true
+      # - TZ=UTC
+      # - BLOCK_MALICIOUS=off
+      # - VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget -O- --retry-connrefused --post-data "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"{{VPN_INTERFACE}}\",\"random_port\":false,\"upnp\":false}" http://127.0.0.1:15080/api/v2/app/setPreferences 2>&1' 
+      # - VPN_PORT_FORWARDING_DOWN_COMMAND=/bin/sh -c 'wget -O- --retry-connrefused --post-data "json={\"listen_port\":0,\"current_network_interface\":\"lo"}" http://127.0.0.1:15080/api/v2/app/setPreferences 2>&1'
+      - VPN_SERVICE_PROVIDER=airvpn
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=KAwpRksBV0E1aKW5xpIRitXPlMjbQ/T4aiyqGh233nk=
+      - WIREGUARD_PRESHARED_KEY=LoIXgfT5VqFduON5Zh80ThrKbAMkbkTt7E6l5HVflWY=
+      # - WIREGUARD_PRIVATE_KEY=PyLCXAQT8KkM4T+dUsOQfn+Ub3pGxfGlxkIApuig+hk=
+      - WIREGUARD_ADDRESSES=10.138.123.182/32
+      - SERVER_COUNTRIES=United States
       - TZ=UTC
-      - BLOCK_MALICIOUS=off
-      - VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget -O- --retry-connrefused --post-data "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"{{VPN_INTERFACE}}\",\"random_port\":false,\"upnp\":false}" http://127.0.0.1:15080/api/v2/app/setPreferences 2>&1' 
-      - VPN_PORT_FORWARDING_DOWN_COMMAND=/bin/sh -c 'wget -O- --retry-connrefused --post-data "json={\"listen_port\":0,\"current_network_interface\":\"lo"}" http://127.0.0.1:15080/api/v2/app/setPreferences 2>&1'
+      - FIREWALL_VPN_INPUT_PORTS=23677

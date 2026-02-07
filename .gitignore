@@ -36,3 +36,4 @@ volumes/portainer
 **/logrotate
 *.LocalAdminToken
 volumes/plex/library/Library/Application Support/Plex Media Server/.LocalAdminToken
+**/asp
