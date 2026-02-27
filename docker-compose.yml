@@ -115,6 +115,8 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=UTC
+    depends_on: 
+      - gluetun
     restart: unless-stopped 
 
   plex:
@@ -129,8 +131,9 @@ services:
       # - PLEX_CLAIM= #optional
     volumes:
       - ./volumes/plex/library:/config
-      - ${MEDIA_ROOT}/tvshows:/tv
-      - ${MEDIA_ROOT}/movies:/movies
+      - ${MEDIA_ROOT}/plex/tvshows:/tv
+      - ${MEDIA_ROOT}/plex/movies:/movies
+      - ${MEDIA_ROOT}/plex/music:/music
     restart: unless-stopped
 
   overseerr:
@@ -161,6 +164,10 @@ services:
     volumes:
       - ./volumes/qbittorrent/config:/config
       - ${DOWNLOAD_ROOT}:/downloads
+      - ${MEDIA_ROOT}/plex/tvshows:/tv
+      - ${MEDIA_ROOT}/plex/movies:/movies
+      - ${MEDIA_ROOT}/plex/music:/music
+      - ${MEDIA_ROOT}/slowjail:/slowjail
     depends_on:
       - gluetun
     network_mode: service:gluetun
@@ -233,3 +240,35 @@ services:
       - SERVER_COUNTRIES=United States
       - TZ=UTC
       - FIREWALL_VPN_INPUT_PORTS=23677
+
+#   db:
+#     image: mariadb:10.6
+#     restart: unless-stopped
+#     command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+#     volumes:
+#       - db:/var/lib/mysql
+#     environment:
+#       - MYSQL_ROOT_PASSWORD=password
+#       - MYSQL_PASSWORD=password
+#       - MYSQL_DATABASE=nextcloud
+#       - MYSQL_USER=nextcloud
+
+#   nc:
+#     image: nextcloud
+#     restart: unless-stopped
+#     ports:
+#       - 8080:80
+#     links:
+#       - db
+#     volumes:
+#       - nextcloud:/var/www/html
+#     environment:
+#       - MYSQL_PASSWORD=password
+#       - MYSQL_DATABASE=nextcloud
+#       - MYSQL_USER=nextcloud
+#       - MYSQL_HOST=db
+
+# volumes:
+#   nextcloud:
+#   db:
+

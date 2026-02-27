@@ -5,6 +5,9 @@
     "radarr": {
         "save_path": ""
     },
+    "slowjail": {
+        "save_path": "/slowjail"
+    },
     "tv-sonarr": {
         "save_path": ""
     }

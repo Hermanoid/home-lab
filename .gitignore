@@ -41,3 +41,6 @@ volumes/prowlarr/config/Definitions
 volumes/radarr/config/MediaCover
 volumes/qbittorrent/config/qBittorrent/BT_backup
 volumes/plex/library/Library/Application Support/Plex Media Server/Plug-in Support/Data
+**/MediaCover
+**/Backups
+volumes/plex/library
